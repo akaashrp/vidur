@@ -68,12 +68,16 @@ def prepare_subset_dfs(_args):
         "h100": 4.25,
         "a100": 2.21,
         "a40": 1.28,
+        "a10": 0.55,
+        "t4": 0.27,
     }
 
     NEW_GPU_COSTS = {
         "h100": 6.98,
         "a100": 3.72,
         "a40": 1.28,
+        "a10": 0.55,
+        "t4": 0.27,
     }
 
     # update the "cost" and "capacity_per_dollar" columns accourding to the new costs use "replica_device" as the key

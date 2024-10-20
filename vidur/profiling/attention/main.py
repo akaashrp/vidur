@@ -46,6 +46,8 @@ def parse_args():
             "meta-llama/Llama-2-7b-hf",
             "codellama/CodeLlama-34b-Instruct-hf",
             "meta-llama/Llama-2-70b-hf",
+            "facebook/opt-6.7b",
+            "facebook/opt-30b",
         ],
         help="Models to profile",
     )

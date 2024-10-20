@@ -7,3 +7,5 @@ class NodeSKUType(BaseIntEnum):
     H100_PAIRWISE_NVLINK = 3
     A100_DGX = 4
     H100_DGX = 5
+    A10_PAIRWISE_NVLINK = 6
+    T4_PAIRWISE_NVLINK = 7

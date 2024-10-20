@@ -212,3 +212,53 @@ class Qwen72BModelConfig(QwenModelConfig):
     @staticmethod
     def get_name():
         return "Qwen/Qwen-72B"
+
+@dataclass
+class OPT67BModelConfig(Llama2ModelConfig):
+    num_layers: int = 32
+    num_q_heads: int = 32
+    num_kv_heads: int = 32
+    embedding_dim: int = 4096
+    mlp_hidden_dim: int = 16384
+    max_position_embeddings: int = 2048
+    use_gated_mlp: bool = False
+    use_bias: bool = False
+    use_qkv_bias: bool = False
+    activation: ActivationType = ActivationType.GELU
+    norm: NormType = NormType.RMS_NORM
+    post_attn_norm: bool = True
+    vocab_size: int = 50272
+    is_neox_style: bool = False
+    rope_theta: None
+    rope_scaling: None
+    partial_rotary_factor: None
+    no_tensor_parallel: bool = False
+
+    @staticmethod
+    def get_name():
+        return "facebook/opt-6.7b"
+    
+@dataclass
+class OPT30BModelConfig(Llama2ModelConfig):
+    num_layers: int = 48
+    num_q_heads: int = 56
+    num_kv_heads: int = 56
+    embedding_dim: int = 7168
+    mlp_hidden_dim: int = 28672
+    max_position_embeddings: int = 2048
+    use_gated_mlp: bool = False
+    use_bias: bool = False
+    use_qkv_bias: bool = False
+    activation: ActivationType = ActivationType.GELU
+    norm: NormType = NormType.RMS_NORM
+    post_attn_norm: bool = True
+    vocab_size: int = 50272
+    is_neox_style: bool = False
+    rope_theta: None
+    rope_scaling: None
+    partial_rotary_factor: None
+    no_tensor_parallel: bool = False
+
+    @staticmethod
+    def get_name():
+        return "facebook/opt-30b"

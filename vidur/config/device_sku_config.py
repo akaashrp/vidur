@@ -15,12 +15,30 @@ class BaseDeviceSKUConfig(BaseFixedConfig):
 
 @dataclass
 class A40DeviceSKUConfig(BaseDeviceSKUConfig):
-    fp16_tflops: int = 150
-    total_memory_gb: int = 45
+    fp16_tflops: int = 65
+    total_memory_gb: int = 10000
 
     @staticmethod
     def get_type():
         return DeviceSKUType.A40
+    
+@dataclass
+class T4DeviceSKUConfig(BaseDeviceSKUConfig):
+    fp16_tflops: int = 65
+    total_memory_gb: int = 10000 # default 16
+
+    @staticmethod
+    def get_type():
+        return DeviceSKUType.T4
+
+@dataclass
+class A10DeviceSKUConfig(BaseDeviceSKUConfig):
+    fp16_tflops: int = 125
+    total_memory_gb: int = 24
+
+    @staticmethod
+    def get_type():
+        return DeviceSKUType.A10
 
 
 @dataclass
