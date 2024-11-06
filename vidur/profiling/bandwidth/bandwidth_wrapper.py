@@ -78,7 +78,7 @@ class BandwidthWrapper:
             dst.copy_(src)
         torch.cuda.synchronize()
         
-        return {
+        prof = {
             "time_stats": self.time_stats_store.get_stats(),
             "data_size": config.data_size,
             "direction": config.direction,
@@ -87,6 +87,8 @@ class BandwidthWrapper:
             "n_embd": self._model_config.embedding_dim,
             "dtype": str(self._dtype),
         }
+        print(prof)
+        return prof
 
 def get_bandwidth_test_configs(
     model_config: ModelConfig,

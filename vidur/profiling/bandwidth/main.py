@@ -90,8 +90,6 @@ def profile_model(
         worker_id = len(promises) % args.num_gpus
         promise = wrappers[worker_id].profile.remote(config)
         promises.append(promise)
-
-        print("Promises:", promises)
         
         if len(promises) >= args.num_gpus:
             results = ray.get(promises)
