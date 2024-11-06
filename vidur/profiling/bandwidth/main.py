@@ -113,7 +113,7 @@ def profile_model(
     # Calculate bandwidth in GB/s
     df["bandwidth_gbps"] = (
         df["data_size"] * df["batch_size"] / 
-        (df["time_stats.gpu_time_ns"] * 1e-9) / 
+        (df["time_stats.mean"] * 1e-9) / 
         (1024 * 1024 * 1024)
     )
     
@@ -129,7 +129,7 @@ def main():
     all_configs = {}
     for model in args.models:
         model_config = ModelConfig.from_model_name(model)
-        configs = get_bandwidth_test_configs(model_config, max_size=(1024 * 1024 * 1024) // 2)
+        configs = get_bandwidth_test_configs(model_config, max_size=(1024 * 1024 * 1024) // 1024)
         all_configs[model] = configs
     
     print(all_configs)
