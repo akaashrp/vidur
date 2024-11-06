@@ -1,0 +1,5 @@
+num_prefill_tokens,num_decode_tokens,num_total_tokens,pd_ratio
+512,8,520,64.0
+1,8,9,0.125
+1,8,9,0.125
+1,8,9,0.125
