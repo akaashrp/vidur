@@ -104,13 +104,15 @@ def profile_model(
     
     # Convert results to DataFrame
     df = pd.DataFrame(all_results)
+    print(df.head())
+
     df = (
         pd.json_normalize(df["time_stats"])
         .add_prefix("time_stats.")
         .join(df.drop(columns=["time_stats"]))
     )
 
-    print(df)
+    print(df.head())
     
     # Calculate bandwidth in GB/s
     df["bandwidth_gbps"] = (
