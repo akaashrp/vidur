@@ -109,6 +109,8 @@ def profile_model(
         .add_prefix("time_stats.")
         .join(df.drop(columns=["time_stats"]))
     )
+
+    print(df)
     
     # Calculate bandwidth in GB/s
     df["bandwidth_gbps"] = (
