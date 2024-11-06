@@ -85,6 +85,7 @@ def profile_model(
         wrapper_actor.remote(model_config, dtype)
         for _ in range(args.num_gpus)
     ]
+    print("Wrappers:", wrappers)
     
     for config in test_configs:
         worker_id = len(promises) % args.num_gpus
