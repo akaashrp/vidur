@@ -90,9 +90,12 @@ def profile_model(
         worker_id = len(promises) % args.num_gpus
         promise = wrappers[worker_id].profile.remote(config)
         promises.append(promise)
+
+        print("Promises:", promises)
         
         if len(promises) >= args.num_gpus:
             results = ray.get(promises)
+            print("Results:", results)
             all_results.extend(results)
             promises = []
             
@@ -104,15 +107,13 @@ def profile_model(
     
     # Convert results to DataFrame
     df = pd.DataFrame(all_results)
-    print(df.head())
+    print(df["time_stats"])
 
     df = (
         pd.json_normalize(df["time_stats"])
         .add_prefix("time_stats.")
         .join(df.drop(columns=["time_stats"]))
     )
-
-    print(df.head())
     
     # Calculate bandwidth in GB/s
     df["bandwidth_gbps"] = (
@@ -133,10 +134,8 @@ def main():
     all_configs = {}
     for model in args.models:
         model_config = ModelConfig.from_model_name(model)
-        configs = get_bandwidth_test_configs(model_config, max_size=(1024 * 1024 * 1024) // 1024)
+        configs = get_bandwidth_test_configs(model_config, max_size=1024)
         all_configs[model] = configs
-    
-    print(all_configs)
     
     pbar = tqdm(total=sum(len(configs) for configs in all_configs.values()))
     
