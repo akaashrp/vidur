@@ -132,6 +132,8 @@ def main():
         configs = get_bandwidth_test_configs(model_config, max_size=(1024 * 1024 * 1024) // 2)
         all_configs[model] = configs
     
+    print(all_configs)
+    
     pbar = tqdm(total=sum(len(configs) for configs in all_configs.values()))
     
     for model in args.models:

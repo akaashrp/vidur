@@ -126,7 +126,3 @@ def get_bandwidth_test_configs(
                 configs.append(BandwidthTestConfig(size, direction, batch_size))
     
     return configs
-
-model_config = ModelConfig.from_model_name("meta-llama/Llama-2-7b-hf")
-test_configs = get_bandwidth_test_configs(model_config)
-print(test_configs)
