@@ -76,7 +76,6 @@ class BandwidthWrapper:
 
         self.profiler.__enter__()
 
-        # Warmup
         for _ in range(WARMUP_STEPS):
             dst.copy_(src)
             torch.cuda.synchronize()
