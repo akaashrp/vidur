@@ -66,6 +66,7 @@ class CudaTimer:
         return self
 
     def handle_trace(self, trace):
+        print("Handling trace")
         events = trace.events()
 
         if self.filter_str:
