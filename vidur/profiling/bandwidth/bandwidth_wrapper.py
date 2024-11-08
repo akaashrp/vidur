@@ -9,13 +9,6 @@ import torch
 import ray
 from tqdm import tqdm
 
-import sarathi.metrics.cuda_timer
-
-from vidur.profiling.common.cuda_timer import CudaTimer
-
-# monkey patching the CudaTimer class to use the sarathi implementation
-sarathi.metrics.cuda_timer.CudaTimer = CudaTimer
-
 from vidur.profiling.common.model_config import ModelConfig
 from vidur.profiling.common.timer_stats_store import TimerStatsStore
 
@@ -39,7 +32,11 @@ class BandwidthWrapper:
         dtype: torch.dtype,
     ):
         # self.time_stats_store = TimerStatsStore(profile_method="kineto")
-        self.timer = CudaTimer("vidur_bandwidth")
+        self.timer_stats_store = TimerStatsStore(profile_method="kineto")
+        self.profiler = torch.profiler.profile(
+            activities=[torch.profiler.ProfilerActivity.CUDA],
+            on_trace_ready=self.timer_stats_store.handle_trace,
+        )
         self._model_config = model_config
         self._dtype = dtype
         try:
@@ -47,6 +44,17 @@ class BandwidthWrapper:
         except RuntimeError:
             raise RuntimeError("CUDA is not available on this machine.")
         
+    def handle_trace(self, trace):
+        events = trace.events()
+
+        if self.filter_str:
+            events = [e for e in events if e.name.startswith(self.filter_str)]
+
+        total_cuda_time = self.aggregation_fn([e.cuda_time_total for e in events])
+        self.timer_stats_store.record_time(
+            self.name, total_cuda_time * 1e-3
+        )  # convert to ms
+    
     def _get_test_tensors(self, config: BandwidthTestConfig) -> Tuple[torch.Tensor, torch.Tensor]:
         """Create test tensors for bandwidth measurement."""
         if config.direction == 'h2d':
@@ -73,14 +81,14 @@ class BandwidthWrapper:
         """Profile bandwidth for given configuration."""
         src, dst = self._get_test_tensors(config)
 
-        self.timer.__enter__()
+        self.profiler.__enter__()
         
         # Warmup
         for _ in range(WARMUP_STEPS):
             dst.copy_(src)
         torch.cuda.synchronize()
         
-        self.timer.timer_stats_store.clear_stats()
+        self.timer_stats_store.clear_stats()
         
         # time = datetime.datetime.now()
         # Active measurements
@@ -90,9 +98,11 @@ class BandwidthWrapper:
 
         # time = datetime.datetime.now() - time
         # print("time taken", time)
+
+        self.profiler.__exit__(None, None, None)
         
         prof = {
-            "time_stats": self.timer.timer_stats_store.get_stats(),
+            "time_stats": self.timer_stats_store.get_stats(),
             "data_size": config.data_size,
             "direction": config.direction,
             "batch_size": config.batch_size,

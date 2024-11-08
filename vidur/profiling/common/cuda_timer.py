@@ -23,7 +23,7 @@ class CudaTimer:
         else:
             self.name = None
 
-        self.timer_stats_store = TimerStatsStore(profile_method="kineto")
+        self.timer_stats_store = TimerStatsStore()
         self.disabled = (name is None) or self.timer_stats_store.disabled
 
         if self.disabled:
