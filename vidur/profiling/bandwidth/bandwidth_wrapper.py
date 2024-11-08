@@ -46,11 +46,7 @@ class BandwidthWrapper:
         
     def handle_trace(self, trace):
         events = trace.events()
-
-        if self.filter_str:
-            events = [e for e in events if e.name.startswith(self.filter_str)]
-
-        total_cuda_time = self.aggregation_fn([e.cuda_time_total for e in events])
+        total_cuda_time = sum([e.cuda_time_total for e in events])
         self.timer_stats_store.record_time(
             self.name, total_cuda_time * 1e-3
         )  # convert to ms
