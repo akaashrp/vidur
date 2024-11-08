@@ -9,6 +9,8 @@ import torch
 import ray
 from tqdm import tqdm
 
+import sarathi.metrics.cuda_timer
+
 from vidur.profiling.common.model_config import ModelConfig
 from vidur.profiling.common.timer_stats_store import TimerStatsStore
 

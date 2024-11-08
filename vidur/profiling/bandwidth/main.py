@@ -1,9 +1,7 @@
 import argparse
 import datetime
 import os
-from dataclasses import dataclass
 from typing import List, Any
-import numpy as np
 import pandas as pd
 import torch
 import ray
@@ -87,7 +85,7 @@ def profile_model(
     ]
     
     for config in test_configs:
-        worker_id = len(promises) % args.num_gpus
+        worker_id = len(promises)
         promise = wrappers[worker_id].profile.remote(config)
         promises.append(promise)
         
