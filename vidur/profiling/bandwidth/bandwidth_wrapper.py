@@ -78,22 +78,22 @@ class BandwidthWrapper:
         src, dst = self._get_test_tensors(config)
 
         self.profiler.__enter__()
-        
+
         # Warmup
         for _ in range(WARMUP_STEPS):
             dst.copy_(src)
-        torch.cuda.synchronize()
+            torch.cuda.synchronize()
         
         self.timer_stats_store.clear_stats()
         
-        # time = datetime.datetime.now()
-        # Active measurements
         for _ in range(ACTIVE_STEPS):
+            start_event = torch.cuda.Event(enable_timing=True)
+            end_event = torch.cuda.Event(enable_timing=True)
+            
+            start_event.record()
             dst.copy_(src)
-        torch.cuda.synchronize()
-
-        # time = datetime.datetime.now() - time
-        # print("time taken", time)
+            end_event.record()
+            torch.cuda.synchronize()
 
         self.profiler.__exit__(None, None, None)
         
