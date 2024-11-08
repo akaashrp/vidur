@@ -80,7 +80,7 @@ class BandwidthWrapper:
             dst.copy_(src)
         torch.cuda.synchronize()
         
-        self.timer.time_stats_store.clear_stats()
+        self.timer.timer_stats_store.clear_stats()
         
         # time = datetime.datetime.now()
         # Active measurements
@@ -92,7 +92,7 @@ class BandwidthWrapper:
         # print("time taken", time)
         
         prof = {
-            "time_stats": self.timer.time_stats_store.get_stats(),
+            "time_stats": self.timer.timer_stats_store.get_stats(),
             "data_size": config.data_size,
             "direction": config.direction,
             "batch_size": config.batch_size,
