@@ -74,6 +74,7 @@ class BandwidthWrapper:
         
         # Warmup
         for _ in range(WARMUP_STEPS):
+            print("warmup")
             dst.copy_(src)
         torch.cuda.synchronize()
         
@@ -81,6 +82,7 @@ class BandwidthWrapper:
         
         # Active measurements
         for _ in range(ACTIVE_STEPS):
+            print("active")
             dst.copy_(src)
         torch.cuda.synchronize()
 
