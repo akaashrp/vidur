@@ -35,7 +35,7 @@ class BandwidthWrapper:
         self.timer_stats_store = TimerStatsStore(profile_method="kineto")
         self.profiler = torch.profiler.profile(
             activities=[torch.profiler.ProfilerActivity.CUDA],
-            on_trace_ready=self.timer_stats_store.handle_trace,
+            on_trace_ready=self.handle_trace,
         )
         self._model_config = model_config
         self._dtype = dtype
