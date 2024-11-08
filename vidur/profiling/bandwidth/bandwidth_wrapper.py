@@ -77,6 +77,9 @@ class BandwidthWrapper:
         for _ in range(ACTIVE_STEPS):
             dst.copy_(src)
         torch.cuda.synchronize()
+
+        print("profiling done")
+        print(self.time_stats_store.get_stats())
         
         prof = {
             "time_stats": self.time_stats_store.get_stats(),
@@ -87,7 +90,6 @@ class BandwidthWrapper:
             "n_embd": self._model_config.embedding_dim,
             "dtype": str(self._dtype),
         }
-        print(prof)
         return prof
 
 def get_bandwidth_test_configs(

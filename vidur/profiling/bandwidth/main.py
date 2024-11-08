@@ -87,7 +87,7 @@ def profile_model(
     ]
     
     for config in test_configs:
-        worker_id = len(promises)
+        worker_id = len(promises) % args.num_gpus
         promise = wrappers[worker_id].profile.remote(config)
         promises.append(promise)
         
