@@ -93,7 +93,7 @@ class BandwidthWrapper:
 
             self.timer_stats_store.record_time(
                 'vidur_bandwidth', start_event.elapsed_time(end_event) * 1e-3
-            )  # convert to ms
+            ) # record time in s
 
         self.profiler.__exit__(None, None, None)
         

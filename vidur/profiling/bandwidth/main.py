@@ -113,7 +113,7 @@ def profile_model(
     # Calculate bandwidth in GB/s
     df["bandwidth_gbps"] = (
         df["data_size"] * df["batch_size"] / 
-        (df["time_stats.bandwidth.mean"] * 1e-9) / 
+        df["time_stats.bandwidth.mean"] / 
         (1024 * 1024 * 1024)
     )
     
