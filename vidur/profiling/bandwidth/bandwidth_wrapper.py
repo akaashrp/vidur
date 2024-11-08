@@ -11,13 +11,13 @@ from tqdm import tqdm
 
 import sarathi.metrics.cuda_timer
 
-from vidur.profiling.common.model_config import ModelConfig
-from vidur.profiling.common.timer_stats_store import TimerStatsStore
-
 from vidur.profiling.common.cuda_timer import CudaTimer
 
 # monkey patching the CudaTimer class to use the sarathi implementation
 sarathi.metrics.cuda_timer.CudaTimer = CudaTimer
+
+from vidur.profiling.common.model_config import ModelConfig
+from vidur.profiling.common.timer_stats_store import TimerStatsStore
 
 WARMUP_STEPS = 2
 ACTIVE_STEPS = 5
