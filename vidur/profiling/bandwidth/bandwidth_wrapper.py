@@ -9,9 +9,13 @@ import torch
 import ray
 from tqdm import tqdm
 
-from vidur.profiling.common.cuda_timer import CudaTimer
 from vidur.profiling.common.model_config import ModelConfig
 from vidur.profiling.common.timer_stats_store import TimerStatsStore
+
+from vidur.profiling.common.cuda_timer import CudaTimer
+
+# monkey patching the CudaTimer class to use the sarathi implementation
+sarathi.metrics.cuda_timer.CudaTimer = CudaTimer
 
 WARMUP_STEPS = 2
 ACTIVE_STEPS = 5
