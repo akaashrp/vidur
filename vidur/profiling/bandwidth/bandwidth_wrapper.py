@@ -48,7 +48,7 @@ class BandwidthWrapper:
         events = trace.events()
         total_cuda_time = sum([e.cuda_time_total for e in events])
         self.timer_stats_store.record_time(
-            self.name, total_cuda_time * 1e-3
+            'vidur_bandwidth', total_cuda_time * 1e-3
         )  # convert to ms
     
     def _get_test_tensors(self, config: BandwidthTestConfig) -> Tuple[torch.Tensor, torch.Tensor]:
