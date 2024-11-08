@@ -80,11 +80,15 @@ class BandwidthWrapper:
         
         self.time_stats_store.clear_stats()
         
+        time = datetime.datetime.now()
         # Active measurements
         for _ in range(ACTIVE_STEPS):
             print("active")
             dst.copy_(src)
         torch.cuda.synchronize()
+
+        time = datetime.datetime.now() - time
+        print("time taken", time)
 
         print("profiling done")
         print(self.time_stats_store.get_stats())
