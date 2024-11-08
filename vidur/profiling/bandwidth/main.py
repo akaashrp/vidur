@@ -54,7 +54,7 @@ def parse_args():
     )
     args = parser.parse_args()
 
-    args.output_dir = (f"{args.output_dir}/mlp/{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}")
+    args.output_dir = (f"{args.output_dir}/bandwidth/{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}")
     os.makedirs(args.output_dir, exist_ok=True)
 
     return args
@@ -91,7 +91,6 @@ def profile_model(
         
         if len(promises) >= args.num_gpus:
             results = ray.get(promises)
-            print("Results:", results)
             all_results.extend(results)
             promises = []
             
