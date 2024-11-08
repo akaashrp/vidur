@@ -38,7 +38,8 @@ class BandwidthWrapper:
         model_config: ModelConfig,
         dtype: torch.dtype,
     ):
-        self.time_stats_store = TimerStatsStore(profile_method="kineto")
+        # self.time_stats_store = TimerStatsStore(profile_method="kineto")
+        self.timer = CudaTimer("vidur_bandwidth")
         self._model_config = model_config
         self._dtype = dtype
         try:
@@ -71,30 +72,27 @@ class BandwidthWrapper:
     ) -> Dict:
         """Profile bandwidth for given configuration."""
         src, dst = self._get_test_tensors(config)
+
+        self.timer.__enter__()
         
         # Warmup
         for _ in range(WARMUP_STEPS):
-            print("warmup")
             dst.copy_(src)
         torch.cuda.synchronize()
         
-        self.time_stats_store.clear_stats()
+        self.timer.time_stats_store.clear_stats()
         
-        time = datetime.datetime.now()
+        # time = datetime.datetime.now()
         # Active measurements
         for _ in range(ACTIVE_STEPS):
-            print("active")
             dst.copy_(src)
         torch.cuda.synchronize()
 
-        time = datetime.datetime.now() - time
-        print("time taken", time)
-
-        print("profiling done")
-        print(self.time_stats_store.get_stats())
+        # time = datetime.datetime.now() - time
+        # print("time taken", time)
         
         prof = {
-            "time_stats": self.time_stats_store.get_stats(),
+            "time_stats": self.timer.time_stats_store.get_stats(),
             "data_size": config.data_size,
             "direction": config.direction,
             "batch_size": config.batch_size,

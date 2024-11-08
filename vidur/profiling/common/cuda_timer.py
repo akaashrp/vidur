@@ -23,7 +23,7 @@ class CudaTimer:
         else:
             self.name = None
 
-        self.timer_stats_store = TimerStatsStore()
+        self.timer_stats_store = TimerStatsStore(profile_method="kineto")
         self.disabled = (name is None) or self.timer_stats_store.disabled
 
         if self.disabled:
@@ -66,7 +66,6 @@ class CudaTimer:
         return self
 
     def handle_trace(self, trace):
-        print("Handling trace")
         events = trace.events()
 
         if self.filter_str:
